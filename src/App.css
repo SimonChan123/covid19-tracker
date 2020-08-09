@@ -2,9 +2,41 @@
   margin: 0;
 }
 
+.app {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+body {
+  color: wheat;
+  background-color: black;
+}
+
 .app__header {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
   justify-content: space-between;
+}
+
+.app__left {
+  flex: 0.8
+}
+
+.app__dropdown {
+  color: wheat;
+  background-color: wheat;
+}
+
+.app__stats {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 767px) {
+  .app {
+    flex-direction: column;
+
+  }
 }
