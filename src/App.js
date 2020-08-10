@@ -74,7 +74,11 @@ function App() {
         console.log(data);
 
         setmapZoom(4);
-        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        if (countryCode == 'worldwide') {
+          setMapCenter([34.80746, -40.4796]);
+        } else {
+          setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        }
         console.log(mapCenter);
       })
   };
@@ -136,7 +140,7 @@ function App() {
           <h3>Live cases by country</h3>
           {/* Table */}
           <Table countries={tableData} />
-          
+
           <h3 className="app_graphTitle">Worldwide {casesType}</h3>
           {/* Graph */}
           <LineGraph className="app__graph" casesType={casesType} />
