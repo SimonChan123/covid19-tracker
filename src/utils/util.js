@@ -52,9 +52,13 @@ const buildChartData = (data, casesType) => {
     return chartData;
 };
 
+const prettyPrintStat = (stat) => {
+  return stat ? `+${numeral(stat).format("0.0a")}` : "+0";
+}
+
 // draw circles on the map
-const showDataOnMap = (data, casesType = "cases") =>
-    data.map(country => {
+const showDataOnMap = (data, casesType = "cases") => {
+    return data.map(country => {
         return (
             <Circle
                 center={[country.countryInfo.lat, country.countryInfo.long]}
@@ -62,13 +66,19 @@ const showDataOnMap = (data, casesType = "cases") =>
                 fillColor={casesTypeColors[casesType].hex}
                 radius={Math.sqrt(country[casesType]) * casesTypeColors[casesType].multiplier}
             >
-                <Popup>
-                    <h1>im a popup</h1>
+                <Popup className="popup">
+                    <div className="popup__container">
+                        <div className="popup__flag" style={{ backgroundImage: `url(${country.countryInfo.flag})` }}></div>
+                        <div className="popup__name">{country.country}</div>
+                        <div className="popup__confirmed">Cases: { numeral(country.cases).format("0,0") }</div>
+                        <div className="popup__recovered">Recovered: { numeral(country.recovered).format("0,0") }</div>
+                        <div className="popup__deaths">Deaths: { numeral(country.deaths).format("0,0") }</div>
+                    </div>
                 </Popup>
             </Circle>
         )
     })
+}
 
-
-export { sortData, buildChartData, showDataOnMap };
+export { sortData, buildChartData, showDataOnMap, prettyPrintStat };
 
