@@ -12,12 +12,16 @@ import Map from './components/Map';
 import Table from './components/Table';
 import { sortData } from './utils/util';
 import LineGraph from './components/LineGraph';
+import "leaflet/dist/leaflet.css";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
+  const [mapCountries, setMapCountries] = useState([]);
+  const [mapCenter, setMapCenter] = useState({lat: 34.80746, lng: -40.4796});
+  const [mapZoom, setmapZoom] = useState(3);
 
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/all')
@@ -25,7 +29,7 @@ function App() {
       .then((data) => {
         setCountryInfo(data);
       })
-  }, [])
+  }, []);
 
   useEffect(() => {
     const getCountryData = async () => {
@@ -40,6 +44,7 @@ function App() {
             });
           });
 
+          setMapCountries(data);
           setCountries(countries);
 
           const sortedData = sortData(data);
@@ -50,7 +55,7 @@ function App() {
         })
     };
     getCountryData();
-  }, [])
+  }, []);
 
   const onCountryChange = async (event) => {
     const countryCode = event.target.value;
@@ -66,6 +71,10 @@ function App() {
         console.log(countryCode);
         setCountryInfo(data);
         console.log(data);
+
+        setmapZoom(4);
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        console.log(mapCenter);
       })
   };
 
@@ -74,6 +83,7 @@ function App() {
       <div className="app__left">
         <div className="app__header">
           <h1>COVID 19 Tracker</h1>
+          {/* Dropdown Menu */}
           <FormControl className="app__dropdown">
             <Select variant="outlined" onChange={onCountryChange} value={country}>
               {/* loop through countries */}
@@ -86,20 +96,27 @@ function App() {
           </FormControl>
         </div>
 
+        {/* Info Boxes */}
         <div className="app__stats">
           <InfoBox title="Coronarvirus Cases" cases={countryInfo.todayCases} total={countryInfo.cases} />
           <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
           <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
         </div>
 
-        {/* Map */}
-        <Map />
+        {/* World Map */}
+        <Map 
+          countries={mapCountries}
+          center={mapCenter} 
+          zoom={mapZoom} 
+        />
       </div>
       <Card className="app__right" style={{ backgroundColor:"wheat" }}>
         <CardContent>
           <h3>Live cases by country</h3>
+          {/* Table */}
           <Table countries={tableData} />
           <h3>Worldwide new cases</h3>
+          {/* Graph */}
           <LineGraph />
         </CardContent>
       </Card>

@@ -27,6 +27,11 @@ const buildChartData = (data, casesType) => {
     return chartData;
 };
 
+// draw circles on the map
+const showDataOnMap = (data, casesType = "cases") => {
+    
+}
 
-export { sortData, buildChartData };
+
+export { sortData, buildChartData, showDataOnMap };
 
