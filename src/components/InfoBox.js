@@ -3,7 +3,7 @@ import { Card, CardContent, Typography } from '@material-ui/core'
 
 function InfoBox({ title, cases, total }) {
     return (
-        <Card className="infoBox">
+        <Card className="infoBox" style={{ backgroundColor:"wheat" }}>
             <CardContent>
                 <Typography color="textSecondary" className="infoBox__title">
                     { title }

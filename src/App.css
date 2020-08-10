@@ -21,7 +21,10 @@ body {
 }
 
 .app__left {
-  flex: 0.8
+  flex: 0.8;
+}
+
+.app__right {
 }
 
 .app__dropdown {

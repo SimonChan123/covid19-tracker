@@ -8,12 +8,16 @@ import {
 } from '@material-ui/core';
 import './App.css';
 import InfoBox from './components/InfoBox';
-import Map from './components/Map'
+import Map from './components/Map';
+import Table from './components/Table';
+import { sortData } from './utils/util';
+import LineGraph from './components/LineGraph';
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/all')
@@ -37,6 +41,9 @@ function App() {
           });
 
           setCountries(countries);
+
+          const sortedData = sortData(data);
+          setTableData(sortedData);
         })
         .catch((error) => {
           console.log(error);
@@ -72,7 +79,7 @@ function App() {
               {/* loop through countries */}
               <MenuItem value="worldwide">Worldwide</MenuItem>
               { countries.map((country) => (
-                  <MenuItem value={country.value}>{country.name}</MenuItem>
+                  <MenuItem value={country.value} key={country.value}>{country.name}</MenuItem>
                 ))
               }
             </Select>
@@ -88,11 +95,12 @@ function App() {
         {/* Map */}
         <Map />
       </div>
-      <Card className="app_right">
+      <Card className="app__right" style={{ backgroundColor:"wheat" }}>
         <CardContent>
           <h3>Live cases by country</h3>
-
+          <Table countries={tableData} />
           <h3>Worldwide new cases</h3>
+          <LineGraph />
         </CardContent>
       </Card>
     </div>
